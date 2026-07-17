@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWIFTY® — We build software, swiftly.</title>
+<meta name="description" content="Swifty is a precision digital practice. SaaS, AI, web, mobile, VoIP and infrastructure — engineered and shipped in weeks, not quarters.">
+<meta property="og:title" content="SWIFTY® — We build software, swiftly.">
+<meta property="og:description" content="A precision digital practice. Shipped in weeks, not quarters.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230C0C0C'/%3E%3Cpath fill='%23FF4A00' d='M19 3 7 19h6.5L12 29l12-16h-6.5z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   SWIFTY — SWIFT/OS · brutalist editorial · tech mono
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --paper:#F2F0EA;
+  --paper-dim:#E9E6DE;
+  --ink:#0C0C0C;
+  --ink-soft:#2A2A28;
+  --accent:#FF4A00;
+  --rule:rgba(12,12,12,.16);
+  --rule-strong:rgba(12,12,12,.85);
+  --rule-inv:rgba(242,240,234,.22);
+  --gut:5vw;
+  --nav-h:64px;
+  --font-d:"Archivo",system-ui,sans-serif;
+  --font-m:"JetBrains Mono",ui-monospace,monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-padding-top:calc(var(--nav-h) + 8px)}
+html,body{overflow-x:clip}
+html{background:var(--ink)}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-d);
+  font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;background:none;border:0;color:inherit;cursor:pointer}
+ul,ol{list-style:none}
+img,svg,canvas{display:block;max-width:100%}
+::selection{background:var(--accent);color:var(--ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* type utilities */
+.d{ /* display */
+  font-family:var(--font-d);
+  font-stretch:125%;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:-.015em;
+  line-height:.86;
+}
+.m{ /* mono label */
+  font-family:var(--font-m);
+  font-size:12px;font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  line-height:1.5;
+}
+.m-dim{opacity:.66}
+.acc{color:var(--accent)}
+
+.skip-link{
+  position:fixed;top:-64px;left:12px;z-index:500;
+  background:var(--ink);color:var(--paper);
+  font-family:var(--font-m);font-size:12px;text-transform:uppercase;letter-spacing:.08em;
+  padding:10px 16px;transition:top .2s;
+}
+.skip-link:focus{top:12px}
+
+/* ═══ grain + guides ═══ */
+.grain{
+  position:fixed;inset:0;z-index:250;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.guides{
+  position:fixed;inset:0;z-index:80;pointer-events:none;
+  mix-blend-mode:difference;
+}
+.guides i{
+  position:absolute;top:0;bottom:0;width:1px;
+  background:rgba(255,255,255,.07);
+}
+.guides i:nth-child(1){left:var(--gut)}
+.guides i:nth-child(2){left:50%}
+.guides i:nth-child(3){right:var(--gut)}
+.guides i:nth-child(4),.guides i:nth-child(5){display:none}
+@media(min-width:900px){
+  .guides i:nth-child(4){display:block;left:27.5%}
+  .guides i:nth-child(5){display:block;left:72.5%}
+}
+
+/* ═══ preloader ═══ */
+.pre{
+  position:fixed;inset:0;z-index:300;
+  background:var(--ink);color:var(--paper);
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:24px var(--gut) 4vh;
+  cursor:pointer;
+}
+html.static .pre{display:none}
+.pre-top{display:flex;justify-content:space-between;align-items:flex-start}
+.pre-logs{position:absolute;left:var(--gut);bottom:5vh;display:flex;flex-direction:column;gap:6px}
+.pre-log{opacity:0}
+.pre-log b{color:var(--accent);font-weight:500}
+.pre-count{
+  align-self:flex-end;text-align:right;
+  font-family:var(--font-m);font-weight:700;
+  font-size:clamp(90px,20vw,260px);line-height:.8;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-.04em;
+}
+.pre-count .u{font-size:.22em;vertical-align:top;letter-spacing:0;color:var(--accent)}
+.pre-bar{
+  position:absolute;left:0;top:0;height:3px;width:100%;
+  background:rgba(242,240,234,.12);
+}
+.pre-bar i{display:block;height:100%;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left}
+
+/* ═══ nav (difference blend: auto-inverts over ink sections) ═══ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  mix-blend-mode:difference;color:#fff;
+  height:var(--nav-h);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--gut);
+  border-bottom:1px solid rgba(255,255,255,.14);
+}
+.brand{
+  font-family:var(--font-d);font-stretch:125%;font-weight:900;
+  font-size:20px;letter-spacing:-.02em;text-transform:uppercase;
+}
+.brand sup{font-size:.45em;font-weight:700;letter-spacing:0}
+.nav-links{display:none;gap:34px}
+.nav-links a{
+  font-family:var(--font-m);font-size:12px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.08em;
+  position:relative;padding:6px 0;
+}
+.nav-links a i{font-style:normal;opacity:.5;margin-right:6px}
+.nav-links a::after{
+  content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;
+  background:#fff;transform:scaleX(0);transform-origin:right;
+  transition:transform .35s cubic-bezier(.65,0,.35,1);
+}
+.nav-links a:hover::after{transform:scaleX(1);transform-origin:left}
+.nav-cta{
+  display:none;
+  font-family:var(--font-m);font-size:12px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.08em;
+  border:1px solid rgba(255,255,255,.8);
+  padding:11px 18px;
+  transition:background .25s,color .25s;
+}
+.nav-cta:hover{background:#fff;color:#000}
+@media(min-width:900px){
+  .nav-links{display:flex}
+  .nav-cta{display:inline-block}
+  .burger{display:none}
+}
+.burger{
+  width:44px;height:44px;margin-right:-10px;
+  display:grid;place-items:center;
+}
+.burger i{
+  display:block;width:22px;height:2px;background:#fff;
+  transition:transform .3s cubic-bezier(.65,0,.35,1);
+}
+.burger i + i{margin-top:6px}
+body.menu-open .burger i:first-child{transform:translateY(4px) rotate(45deg)}
+body.menu-open .burger i:last-child{transform:translateY(-4px) rotate(-45deg)}
+
+.menu{
+  position:fixed;inset:0;z-index:90;
+  background:var(--ink);color:var(--paper);
+  padding:calc(var(--nav-h) + 6vh) var(--gut) 6vh;
+  display:flex;flex-direction:column;justify-content:space-between;
+  opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;
+}
+body.menu-open .menu{opacity:1;visibility:visible}
+.menu-links{display:flex;flex-direction:column}
+.menu-links a{
+  font-family:var(--font-d);font-stretch:125%;font-weight:900;text-transform:uppercase;
+  font-size:clamp(38px,11vw,72px);line-height:1.06;
+  border-bottom:1px solid var(--rule-inv);
+  padding:14px 0;display:flex;align-items:baseline;gap:16px;
+}
+.menu-links a i{font-family:var(--font-m);font-style:normal;font-size:12px;font-weight:500;color:var(--accent)}
+.menu-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(min-width:900px){.menu{display:none}}
+body.menu-open{overflow:hidden}
+
+/* ═══ section chrome ═══ */
+section{position:relative}
+.wrap{padding-inline:var(--gut)}
+.sec-head{
+  display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  padding:18px 0 14px;
+  border-bottom:1px solid var(--rule-strong);
+}
+.sec-head .run{display:none}
+@media(min-width:700px){.sec-head .run{display:block}}
+.on-ink .sec-head{border-bottom-color:var(--rule-inv)}
+
+/* ═══ hero ═══ */
+.hero{
+  min-height:100svh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:calc(var(--nav-h) + 4vh) var(--gut) 4vh;
+  overflow:clip;
+}
+#field{position:absolute;inset:0;z-index:0}
+.hero > *{position:relative;z-index:1}
+.hero-meta-top{
+  position:absolute;top:calc(var(--nav-h) + 18px);left:var(--gut);right:var(--gut);
+  display:flex;justify-content:space-between;z-index:1;
+}
+@media(max-height:700px),(max-width:600px){.hero-meta-top{display:none}}
+.hero-title{margin-bottom:4vh}
+/* full-measure lockup: each line sized to fill ~87.5vw exactly */
+.hl-1{font-size:clamp(47px,13.9vw,392px)}
+.hl-2{font-size:clamp(38px,11.35vw,320px)}
+.hl-3{font-size:clamp(48px,14.45vw,408px)}
+.hl{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.hl-i{display:block;will-change:transform;white-space:nowrap}
+.hl .ast{color:var(--accent)}
+.hl-swift .hl-i{
+  color:transparent;
+  -webkit-text-stroke:2px var(--ink);
+}
+@media(max-width:600px){.hl-swift .hl-i{-webkit-text-stroke:1.2px var(--ink)}}
+.hero-foot{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;
+  border-top:1px solid var(--rule-strong);padding-top:16px;
+}
+.hero-sub{max-width:34ch}
+.hero-note{max-width:30ch;text-align:left}
+@media(min-width:900px){.hero-note{text-align:right}}
+.hero-scrollcue{display:flex;align-items:center;gap:10px}
+.hero-scrollcue .blink{animation:blink 1.1s steps(2) infinite;color:var(--accent)}
+@keyframes blink{50%{opacity:0}}
+html.static .blink{animation:none}
+
+/* ═══ marquee band ═══ */
+.band{
+  border-top:1px solid var(--rule-strong);
+  border-bottom:1px solid var(--rule-strong);
+  padding:22px 0;overflow:clip;
+  background:var(--paper);
+}
+.band + .band{border-top:0}
+.mq{display:flex;white-space:nowrap;will-change:transform}
+.mq-chunk{display:flex;flex:none;align-items:center}
+.mq-big .mq-chunk span{
+  font-family:var(--font-d);font-stretch:125%;font-weight:900;text-transform:uppercase;
+  font-size:clamp(44px,7.5vw,110px);line-height:1;
+  color:transparent;-webkit-text-stroke:1.5px var(--ink);
+  padding-right:.45em;
+}
+.mq-big .mq-chunk span.solid{color:var(--ink);-webkit-text-stroke:0}
+.mq-big .mq-chunk em{
+  font-style:normal;color:var(--accent);font-size:clamp(30px,5vw,72px);
+  padding-right:.6em;line-height:1;
+}
+.mq-small{margin-top:14px}
+.mq-small .mq-chunk span{
+  font-family:var(--font-m);font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;
+  padding-right:44px;opacity:.7;
+}
+
+/* ═══ services index ═══ */
+.services{padding-top:0}
+.svc-rows{border-bottom:1px solid var(--rule-strong)}
+.svc{
+  position:relative;overflow:hidden;
+  border-top:1px solid var(--rule-strong);
+  padding:26px 0;
+  display:grid;grid-template-columns:1fr;gap:10px;
+}
+.svc:first-child{border-top:0}
+.svc::before{
+  content:"";position:absolute;inset:0;background:var(--ink);
+  transform:scaleY(0);transform-origin:bottom;
+  transition:transform .42s cubic-bezier(.76,0,.24,1);
+}
+.svc > *{position:relative;z-index:1}
+.svc-line1{display:flex;align-items:baseline;gap:18px}
+.svc-idx{flex:none;color:var(--accent)}
+.svc-name{
+  font-size:clamp(30px,6.4vw,86px);
+  transition:color .3s .05s, -webkit-text-stroke .3s .05s;
+}
+.svc-desc{max-width:56ch;transition:color .3s .05s}
+.svc-tags{display:flex;flex-wrap:wrap;gap:8px 20px;transition:color .3s .05s}
+.svc-arrow{
+  position:absolute;right:0;top:26px;z-index:1;
+  font-family:var(--font-m);font-size:20px;
+  opacity:0;transform:translate(-12px,12px);
+  transition:opacity .3s .08s,transform .35s .08s cubic-bezier(.16,1,.3,1);
+  color:var(--accent);
+}
+@media(hover:hover){
+  .svc:hover::before{transform:scaleY(1);transform-origin:top}
+  .svc:hover .svc-name{color:var(--paper)}
+  .svc:hover .svc-desc,.svc:hover .svc-tags{color:var(--paper)}
+  .svc:hover .svc-idx{color:var(--accent)}
+  .svc:hover .svc-arrow{opacity:1;transform:none}
+}
+@media(min-width:900px){
+  .svc{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:end;gap:6px 40px;padding:34px 0}
+  .svc-line1{grid-row:span 2}
+  .svc-desc{justify-self:end;text-align:right;max-width:44ch}
+  .svc-tags{justify-self:end;justify-content:flex-end}
+  .svc-arrow{top:34px}
+}
+
+/* ═══ stats / proof ═══ */
+.proof{background:var(--paper-dim)}
+.stat-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  border-left:1px solid var(--rule-strong);
+  border-top:0;
+}
+.stat{
+  border-right:1px solid var(--rule-strong);
+  border-bottom:1px solid var(--rule-strong);
+  padding:clamp(24px,4vw,56px) clamp(18px,3vw,48px);
+  display:flex;flex-direction:column;gap:10px;
+}
+.stat-num{
+  font-family:var(--font-m);font-weight:700;
+  font-size:clamp(52px,11vw,150px);line-height:.9;letter-spacing:-.05em;
+  font-variant-numeric:tabular-nums;
+}
+.stat-num .u{font-size:.32em;letter-spacing:0;color:var(--accent);font-weight:500}
+.diff-grid{
+  display:grid;grid-template-columns:1fr;
+  border-left:1px solid var(--rule-strong);
+  margin-top:0;
+}
+@media(min-width:700px){.diff-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1100px){.diff-grid{grid-template-columns:repeat(4,1fr)}}
+.diff{
+  border-right:1px solid var(--rule-strong);
+  border-bottom:1px solid var(--rule-strong);
+  padding:22px;
+  min-height:180px;
+  display:flex;flex-direction:column;gap:12px;
+}
+.diff h3{
+  font-family:var(--font-d);font-stretch:125%;font-weight:800;text-transform:uppercase;
+  font-size:19px;letter-spacing:-.01em;line-height:1.1;margin-top:auto;
+}
+.diff p{font-size:14px;line-height:1.55;color:var(--ink-soft)}
+
+/* ═══ process / method ═══ */
+.method-grid{display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:900px){.method-grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr)}}
+.method-sticky{display:none}
+@media(min-width:900px){
+  .method-sticky{
+    display:block;position:sticky;top:calc(var(--nav-h) + 2vh);
+    align-self:start;height:min(72vh,640px);
+    overflow:hidden;
+  }
+  .method-num{
+    font-family:var(--font-d);font-stretch:125%;font-weight:900;
+    font-size:clamp(180px,26vw,430px);line-height:.8;letter-spacing:-.04em;
+    color:transparent;-webkit-text-stroke:2px var(--ink);
+    margin-top:8vh;
+  }
+  .method-num b{font-weight:900;color:var(--accent);-webkit-text-stroke:0}
+}
+.step{
+  border-bottom:1px solid var(--rule-strong);
+  padding:clamp(28px,4vh,48px) 0;
+  display:flex;flex-direction:column;gap:12px;
+}
+.step:first-child{border-top:1px solid var(--rule-strong)}
+@media(min-width:900px){.step:first-child{border-top:0}}
+.step-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.step h3{
+  font-family:var(--font-d);font-stretch:125%;font-weight:900;text-transform:uppercase;
+  font-size:clamp(34px,5.5vw,64px);line-height:.95;
+}
+.step p{max-width:52ch;color:var(--ink-soft)}
+.step .m b{color:var(--accent);font-weight:500}
+
+/* ═══ work — horizontal (ink) ═══ */
+.work{background:var(--ink);color:var(--paper)}
+.work .sec-head{border-bottom-color:var(--rule-inv)}
+.work-pin{min-height:100svh;display:flex;flex-direction:column;overflow:clip;padding-bottom:4vh}
+.work-track{
+  display:flex;align-items:stretch;gap:0;
+  flex:1;margin-top:3vh;
+  will-change:transform;
+}
+.wpanel{
+  flex:none;width:min(78vw,760px);
+  border-right:1px solid var(--rule-inv);
+  padding:3vh 3vw 0 var(--gut);
+  display:flex;flex-direction:column;gap:2vh;
+}
+.wpanel:last-child{border-right:0}
+.wpanel-intro{width:min(88vw,680px);justify-content:center;gap:3vh}
+.wpanel-intro .d{font-size:clamp(44px,7.5vw,110px)}
+.wpanel-intro p{max-width:36ch;color:rgba(242,240,234,.72)}
+.wp-idx{
+  font-family:var(--font-d);font-stretch:125%;font-weight:900;
+  font-size:clamp(60px,9vw,130px);line-height:.85;
+  color:transparent;-webkit-text-stroke:1.5px rgba(242,240,234,.9);
+}
+.wp-fig{
+  flex:1;min-height:180px;max-height:38vh;
+  border:1px solid var(--rule-inv);
+  position:relative;overflow:hidden;
+}
+.wp-fig > i{position:absolute;inset:0;display:block}
+/* generative-looking CSS patterns, ink + accent */
+.pat-bars{background:repeating-linear-gradient(90deg,var(--accent) 0 6px,transparent 6px 26px);opacity:.85;transform:skewX(-12deg) scale(1.2)}
+.pat-rings{background:repeating-radial-gradient(circle at 30% 60%,transparent 0 18px,rgba(242,240,234,.75) 18px 19px)}
+.pat-wave{background:repeating-linear-gradient(0deg,transparent 0 10px,rgba(242,240,234,.7) 10px 11px);transform:skewY(-8deg) scale(1.3)}
+.pat-dots{background-image:radial-gradient(rgba(242,240,234,.8) 1.5px,transparent 1.5px);background-size:20px 20px}
+.pat-diag{background:repeating-linear-gradient(45deg,var(--accent) 0 2px,transparent 2px 16px)}
+.pat-grid{background-image:linear-gradient(rgba(242,240,234,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(242,240,234,.5) 1px,transparent 1px);background-size:26px 26px}
+.wp-fig .tag{
+  position:absolute;left:14px;bottom:12px;
+  background:var(--ink);border:1px solid var(--rule-inv);
+  padding:6px 10px;
+}
+.wp-meta{display:flex;flex-direction:column;gap:6px;padding-bottom:3vh}
+.wp-name{
+  font-family:var(--font-d);font-stretch:125%;font-weight:900;text-transform:uppercase;
+  font-size:clamp(26px,3.6vw,48px);line-height:1;
+}
+.wp-result b{color:var(--accent);font-weight:500}
+.work-progress{
+  margin:0 var(--gut);height:2px;background:rgba(242,240,234,.15);flex:none;
+}
+.work-progress i{display:block;height:100%;background:var(--accent);transform:scaleX(0);transform-origin:left}
+/* desktop pin: clear the fixed nav so section header and brand never superimpose */
+@media(min-width:900px){.work-pin{padding-top:var(--nav-h)}}
+/* static mode (reduced motion / CDN failure): native scroller at all widths */
+html.static .work-pin{min-height:0}
+html.static .work-track{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:12px}
+html.static .wpanel{scroll-snap-align:start}
+html.static .work-progress{display:none}
+/* mobile: native horizontal snap */
+@media(max-width:899px){
+  .work-pin{min-height:0;padding-bottom:6vh}
+  .work-track{
+    overflow-x:auto;scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:12px;
+  }
+  .wpanel{scroll-snap-align:start;width:84vw}
+  .wpanel-intro{width:88vw}
+  .work-progress{display:none}
+}
+
+/* ═══ testimonials / signals ═══ */
+.quote-row{
+  border-bottom:1px solid var(--rule-strong);
+  padding:clamp(30px,5vh,56px) 0;
+  display:grid;grid-template-columns:1fr;gap:16px;
+}
+.quote-row:first-of-type{border-top:0}
+@media(min-width:900px){
+  .quote-row{grid-template-columns:minmax(0,1fr) 220px;align-items:end;gap:40px}
+  .quote-row .who{text-align:right}
+}
+.quote-txt{
+  font-family:var(--font-d);font-stretch:112%;font-weight:700;text-transform:uppercase;
+  font-size:clamp(20px,3.4vw,40px);line-height:1.14;letter-spacing:-.01em;
+  max-width:26ch;
+}
+.quote-txt .qm{color:var(--accent)}
+.quote-txt .w{display:inline-block}
+.who b{display:block;font-weight:500}
+
+/* ═══ CTA (ink) ═══ */
+.cta{
+  background:var(--ink);color:var(--paper);
+  min-height:92svh;display:flex;flex-direction:column;justify-content:space-between;
+  padding-top:0;overflow:clip;
+}
+.cta .sec-head{border-bottom-color:var(--rule-inv)}
+.cta-mid{
+  flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+  gap:4vh;padding-block:6vh;
+}
+.cta-title{font-size:clamp(46px,9.4vw,150px)}
+.cta-title .hollow{color:transparent;-webkit-text-stroke:1.5px var(--paper)}
+.cta-mail{
+  font-family:var(--font-m);font-weight:500;
+  font-size:clamp(18px,3.4vw,44px);letter-spacing:-.02em;
+  border:1px solid var(--rule-inv);
+  padding:.6em 1em;
+  display:inline-flex;align-items:center;gap:.6em;
+  transition:background .3s,color .3s,border-color .3s;
+  will-change:transform;
+}
+.cta-mail:hover{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.cta-meta{display:flex;gap:28px;flex-wrap:wrap}
+.cta-band{border-top:1px solid var(--rule-inv);padding:16px 0;overflow:clip}
+.cta-band .mq-chunk span{
+  font-family:var(--font-d);font-stretch:125%;font-weight:900;text-transform:uppercase;
+  font-size:clamp(30px,5vw,70px);line-height:1;padding-right:.5em;
+  color:transparent;-webkit-text-stroke:1px rgba(242,240,234,.55);
+}
+.cta-band .mq-chunk em{font-style:normal;color:var(--accent);padding-right:.6em;font-size:clamp(22px,3.4vw,48px)}
+
+/* ═══ footer ═══ */
+.footer{background:var(--ink);color:var(--paper);border-top:1px solid var(--rule-inv)}
+.foot-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:36px 20px;
+  padding:6vh var(--gut);
+}
+@media(min-width:900px){.foot-grid{grid-template-columns:repeat(4,1fr)}}
+.foot-grid h4{
+  font-family:var(--font-m);font-size:11px;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+.foot-grid li{margin-bottom:8px}
+.foot-grid a,.foot-grid span{
+  font-family:var(--font-m);font-size:13px;font-weight:400;
+  color:rgba(242,240,234,.75);
+}
+.foot-grid a{transition:color .2s}
+.foot-grid a:hover{color:var(--accent)}
+.foot-mark{
+  overflow:hidden;height:.72em;
+  font-family:var(--font-d);font-stretch:125%;font-weight:900;text-transform:uppercase;
+  font-size:clamp(80px,15.3vw,520px);line-height:.78;letter-spacing:-.02em;
+  padding:0 var(--gut);
+  color:var(--paper);
+}
+.fm-i{display:inline-block;white-space:nowrap;will-change:transform}
+.foot-bottom{
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  padding:14px var(--gut) 18px;border-top:1px solid var(--rule-inv);
+}
+
+/* ═══ cursor ═══ */
+.cur,.cur-ring{display:none}
+@media(hover:hover) and (pointer:fine){
+  .cur{
+    display:block;position:fixed;left:0;top:0;z-index:400;pointer-events:none;
+    width:14px;height:14px;margin:-7px 0 0 -7px;
+    opacity:0;mix-blend-mode:difference;
+  }
+  .cur::before,.cur::after{content:"";position:absolute;background:#fff}
+  .cur::before{left:6px;top:0;width:2px;height:14px}
+  .cur::after{left:0;top:6px;width:14px;height:2px}
+  .cur-ring{
+    display:flex;align-items:center;justify-content:center;
+    position:fixed;left:0;top:0;z-index:399;pointer-events:none;
+    width:44px;height:44px;margin:-22px 0 0 -22px;
+    border:1px solid rgba(255,74,0,.9);border-radius:50%;
+    opacity:0;transform:scale(.6);
+    transition:transform .3s cubic-bezier(.16,1,.3,1);
+  }
+  .cur-ring b{
+    font-family:var(--font-m);font-size:9px;font-weight:700;letter-spacing:.1em;
+    color:var(--accent);opacity:0;transition:opacity .2s;
+    text-transform:uppercase;
+  }
+  body.cur-on .cur,body.cur-on .cur-ring{opacity:1}
+  body.cur-hot .cur-ring{transform:scale(1.5);background:rgba(12,12,12,.75)}
+  body.cur-hot .cur-ring b{opacity:1}
+  body.cur-on,body.cur-on a,body.cur-on button{cursor:none}
+}
+html.static .cur,html.static .cur-ring{display:none !important}
+
+/* ═══ reduced motion / static ═══ */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.01ms !important;animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
+html.static #field{display:none}
+</style>
+<noscript><style>.pre{display:none}#field{display:none}.work-pin{min-height:0}.work-track{overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px}.wpanel{scroll-snap-align:start}.work-progress{display:none}</style></noscript>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="grain" aria-hidden="true"></div>
+<div class="guides" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+<div class="cur" aria-hidden="true"></div>
+<div class="cur-ring" aria-hidden="true"><b></b></div>
+
+<!-- ═══ PRELOADER ═══ -->
+<div class="pre" id="pre" aria-hidden="true">
+  <div class="pre-bar"><i id="preBar"></i></div>
+  <div class="pre-top">
+    <span class="m">SWIFTY® — SWIFT/OS V.2026</span>
+    <span class="m m-dim">CLICK TO SKIP</span>
+  </div>
+  <div class="pre-logs m" id="preLogs">
+    <span class="pre-log">&gt; BOOT SEQUENCE INITIATED <b>OK</b></span>
+    <span class="pre-log">&gt; TYPE SYSTEMS LOADED <b>OK</b></span>
+    <span class="pre-log">&gt; GRID CALIBRATED <b>OK</b></span>
+    <span class="pre-log">&gt; SCROLL ENGINE BOUND <b>OK</b></span>
+    <span class="pre-log">&gt; SHIP MODE <b>ENABLED</b></span>
+  </div>
+  <div class="pre-count"><span id="preNum">000</span><span class="u">%</span></div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="Swifty — back to top">Swifty<sup>®</sup></a>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="#services" data-cursor="GO"><i>01</i>Services</a>
+    <a href="#process" data-cursor="GO"><i>02</i>Process</a>
+    <a href="#work" data-cursor="GO"><i>03</i>Work</a>
+    <a href="contact.html" data-cursor="GO"><i>04</i>Contact</a>
+  </nav>
+  <a class="nav-cta" href="contact.html" data-cursor="GO">Start a project ↗</a>
+  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+    <i></i><i></i>
+  </button>
+</header>
+
+<!-- mobile menu -->
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+  <nav class="menu-links" aria-label="Mobile">
+    <a href="#services"><i>01</i>Services</a>
+    <a href="#process"><i>02</i>Process</a>
+    <a href="#work"><i>03</i>Work</a>
+    <a href="contact.html"><i>04</i>Contact</a>
+  </nav>
+  <div class="menu-foot m">
+    <span>HELLO@SWIFTY.STUDIO</span>
+    <span class="m-dim">© 2026 SWIFTY®</span>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="top" aria-label="Intro">
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="hero-meta-top m" aria-hidden="true">
+    <span class="m-dim">FILE: SWIFTY_2026.HTML</span>
+    <span class="m-dim">DIGITAL PRACTICE — EST. 2020</span>
+  </div>
+
+  <h1 class="hero-title d">
+    <span class="hl hl-1"><span class="hl-i">We build</span></span>
+    <span class="hl hl-2"><span class="hl-i">software,</span></span>
+    <span class="hl hl-3 hl-swift"><span class="hl-i">swiftly<em class="ast">*</em></span></span>
+  </h1>
+
+  <div class="hero-foot">
+    <p class="hero-sub">Swifty is a precision digital practice. Strategy, design and engineering — compressed into weeks, finished to the last pixel.</p>
+    <div class="hero-scrollcue m" aria-hidden="true">
+      <span class="blink">▼</span><span>SCROLL TO INITIALIZE</span>
+    </div>
+    <p class="hero-note m m-dim">*AVG. SIX WEEKS FROM KICKOFF<br>TO SHIPPED V1. MEASURED, NOT MARKETED.</p>
+  </div>
+</section>
+
+<!-- ═══ KINETIC BAND ═══ -->
+<div class="band" aria-hidden="true">
+  <div class="mq mq-big" data-mq-dir="-1" data-mq-speed="1.1">
+    <div class="mq-chunk">
+      <span>Speed</span><em>*</em><span class="solid">Precision</span><em>*</em><span>Craft</span><em>*</em><span class="solid">Momentum</span><em>*</em>
+    </div>
+  </div>
+  <div class="mq mq-small" data-mq-dir="1" data-mq-speed="0.5">
+    <div class="mq-chunk">
+      <span>React</span><span>Next.js</span><span>TypeScript</span><span>Swift</span><span>Kotlin</span><span>Node</span><span>Python</span><span>PostgreSQL</span><span>AWS</span><span>Kubernetes</span><span>Terraform</span><span>Claude</span><span>Twilio</span><span>WebRTC</span><span>GraphQL</span><span>Redis</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SERVICES / INDEX ═══ -->
+<section class="services wrap" id="services" aria-label="Services">
+  <header class="sec-head">
+    <span class="m"><b class="acc">01</b> / <span class="scramble" data-text="INDEX — WHAT WE SHIP">INDEX — WHAT WE SHIP</span></span>
+    <span class="m m-dim run">SWIFTY® — DIGITAL PRACTICE</span>
+  </header>
+
+  <ul class="svc-rows">
+    <li class="svc" data-reveal>
+      <div class="svc-line1">
+        <span class="svc-idx m">S.01</span>
+        <h3 class="svc-name d">SaaS Platforms</h3>
+      </div>
+      <p class="svc-desc">End-to-end products — multi-tenant architecture, billing, auth, admin. From first wireframe to first paying customer.</p>
+      <div class="svc-tags m m-dim"><span>MULTI-TENANT</span><span>BILLING</span><span>AUTH</span><span>ADMIN</span></div>
+      <span class="svc-arrow" aria-hidden="true">↗</span>
+    </li>
+    <li class="svc" data-reveal>
+      <div class="svc-line1">
+        <span class="svc-idx m">S.02</span>
+        <h3 class="svc-name d">Applied AI</h3>
+      </div>
+      <p class="svc-desc">Agents, copilots and automations built around your data and workflows. AI that ships — not slideware.</p>
+      <div class="svc-tags m m-dim"><span>LLM AGENTS</span><span>RAG</span><span>AUTOMATION</span></div>
+      <span class="svc-arrow" aria-hidden="true">↗</span>
+    </li>
+    <li class="svc" data-reveal>
+      <div class="svc-line1">
+        <span class="svc-idx m">S.03</span>
+        <h3 class="svc-name d">Web Systems</h3>
+      </div>
+      <p class="svc-desc">High-performance sites and web apps. Sub-second loads, engineered interactions, SEO structural — not bolted on.</p>
+      <div class="svc-tags m m-dim"><span>NEXT.JS</span><span>PERFORMANCE</span><span>SEO</span></div>
+      <span class="svc-arrow" aria-hidden="true">↗</span>
+    </li>
+    <li class="svc" data-reveal>
+      <div class="svc-line1">
+        <span class="svc-idx m">S.04</span>
+        <h3 class="svc-name d">Mobile Apps</h3>
+      </div>
+      <p class="svc-desc">Native-feeling iOS &amp; Android. The fit and finish users expect on day one — in the store, not in a deck.</p>
+      <div class="svc-tags m m-dim"><span>SWIFT</span><span>KOTLIN</span><span>REACT NATIVE</span></div>
+      <span class="svc-arrow" aria-hidden="true">↗</span>
+    </li>
+    <li class="svc" data-reveal>
+      <div class="svc-line1">
+        <span class="svc-idx m">S.05</span>
+        <h3 class="svc-name d">Voice &amp; VoIP</h3>
+      </div>
+      <p class="svc-desc">Modern telephony — cloud PBX, smart routing, IVR, deep integrations. Voice systems that simply work.</p>
+      <div class="svc-tags m m-dim"><span>TWILIO</span><span>SIP</span><span>WEBRTC</span></div>
+      <span class="svc-arrow" aria-hidden="true">↗</span>
+    </li>
+    <li class="svc" data-reveal>
+      <div class="svc-line1">
+        <span class="svc-idx m">S.06</span>
+        <h3 class="svc-name d">Infra &amp; Ops</h3>
+      </div>
+      <p class="svc-desc">Hosting, CI/CD, monitoring, scaling — handled end to end. Your product stays fast and online while you sleep.</p>
+      <div class="svc-tags m m-dim"><span>99.9% SLA</span><span>24/7 WATCH</span><span>&lt;15MIN RESPONSE</span></div>
+      <span class="svc-arrow" aria-hidden="true">↗</span>
+    </li>
+  </ul>
+</section>
+
+<!-- ═══ PROOF / STATS ═══ -->
+<section class="proof" id="proof" aria-label="Proof">
+  <div class="wrap">
+    <header class="sec-head">
+      <span class="m"><b class="acc">02</b> / <span class="scramble" data-text="PROOF — MEASURED OUTPUT">PROOF — MEASURED OUTPUT</span></span>
+      <span class="m m-dim run">FIELD DATA — VERIFIED 2026</span>
+    </header>
+  </div>
+
+  <div class="wrap" style="padding-block:0 0">
+    <div class="stat-grid" data-reveal>
+      <div class="stat">
+        <span class="stat-num"><span data-count data-target="120">120</span><span class="u">+</span></span>
+        <span class="m m-dim">PRODUCTS SHIPPED</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num"><span data-count data-target="6" data-pad="2">06</span><span class="u">WK</span></span>
+        <span class="m m-dim">AVG. KICKOFF → V1</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num"><span data-count data-target="98">98</span><span class="u">%</span></span>
+        <span class="m m-dim">CLIENTS WHO RETURN</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num"><span data-count data-target="99.9" data-decimals="1">99.9</span><span class="u">%</span></span>
+        <span class="m m-dim">UPTIME — MANAGED INFRA</span>
+      </div>
+    </div>
+
+    <div class="diff-grid" data-reveal-group>
+      <div class="diff">
+        <span class="m acc">D.01</span>
+        <p>Tight scopes, weekly releases. Your first version lands while competitors are still writing specs.</p>
+        <h3>Weeks, not quarters</h3>
+      </div>
+      <div class="diff">
+        <span class="m acc">D.02</span>
+        <p>No hand-offs to juniors. No mystery subcontractors. The team you meet is the team that ships.</p>
+        <h3>Seniors only</h3>
+      </div>
+      <div class="diff">
+        <span class="m acc">D.03</span>
+        <p>Pixel-perfect interfaces on rock-solid architecture. Craft and speed are not a trade-off here.</p>
+        <h3>Design-grade engineering</h3>
+      </div>
+      <div class="diff">
+        <span class="m acc">D.04</span>
+        <p>Clean code, real documentation, full handover. No lock-in, no black boxes, no hostages.</p>
+        <h3>Yours to own</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ METHOD / PROCESS ═══ -->
+<section class="wrap" id="process" aria-label="Process" style="padding-bottom:8vh">
+  <header class="sec-head">
+    <span class="m"><b class="acc">03</b> / <span class="scramble" data-text="METHOD — NO WASTED MOTION">METHOD — NO WASTED MOTION</span></span>
+    <span class="m m-dim run">FIVE PHASES — ZERO DRIFT</span>
+  </header>
+
+  <div class="method-grid">
+    <div class="method-sticky" aria-hidden="true">
+      <div class="method-num" id="methodNum">0<b>1</b></div>
+    </div>
+    <div class="method-steps">
+      <div class="step" data-step="1" data-reveal>
+        <div class="step-top"><span class="m acc">PHASE 01</span><span class="m m-dim">DURATION: <b>01 WK</b></span></div>
+        <h3>Discover</h3>
+        <p>A focused week of strategy — goals, users, scope. You leave with a plan, not a deck.</p>
+      </div>
+      <div class="step" data-step="2" data-reveal>
+        <div class="step-top"><span class="m acc">PHASE 02</span><span class="m m-dim">DURATION: <b>01–02 WK</b></span></div>
+        <h3>Design</h3>
+        <p>Interfaces prototyped in days. You click something real before we write product code.</p>
+      </div>
+      <div class="step" data-step="3" data-reveal>
+        <div class="step-top"><span class="m acc">PHASE 03</span><span class="m m-dim">DURATION: <b>02–04 WK</b></span></div>
+        <h3>Build</h3>
+        <p>Senior engineers in weekly sprints. A demo every Friday — progress you can actually use.</p>
+      </div>
+      <div class="step" data-step="4" data-reveal>
+        <div class="step-top"><span class="m acc">PHASE 04</span><span class="m m-dim">DURATION: <b>01 WK</b></span></div>
+        <h3>Ship</h3>
+        <p>Zero-drama releases: staged rollouts, real-device testing, launch checklists done right.</p>
+      </div>
+      <div class="step" data-step="5" data-reveal>
+        <div class="step-top"><span class="m acc">PHASE 05</span><span class="m m-dim">DURATION: <b>∞</b></span></div>
+        <h3>Scale</h3>
+        <p>We harden, optimize and grow it with you — more features, more users, no rewrites.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WORK / SHIPPED — horizontal ═══ -->
+<section class="work" id="work" aria-label="Selected work">
+  <div class="work-pin" id="workPin">
+    <div class="wrap">
+      <header class="sec-head">
+        <span class="m"><b class="acc">04</b> / <span class="scramble" data-text="SHIPPED — SELECTED WORK">SHIPPED — SELECTED WORK</span></span>
+        <span class="m m-dim run">SCROLL DRIVES TRAVEL →</span>
+      </header>
+    </div>
+
+    <div class="work-track" id="workTrack">
+      <article class="wpanel wpanel-intro">
+        <h2 class="d">Shipped fast.<br>Built to last.</h2>
+        <p>Six of the products we've taken from whiteboard to real users. Fictional names, real methodology.</p>
+        <span class="m acc" aria-hidden="true">KEEP SCROLLING ▸▸</span>
+      </article>
+
+      <article class="wpanel" data-cursor="VIEW">
+        <span class="wp-idx" aria-hidden="true">001</span>
+        <div class="wp-fig"><i class="pat-bars"></i><span class="tag m">SAAS / ANALYTICS</span></div>
+        <div class="wp-meta">
+          <h3 class="wp-name">Pulseboard</h3>
+          <p class="wp-result m">RESULT: <b>0 → 12K USERS / 6 MO</b></p>
+        </div>
+      </article>
+
+      <article class="wpanel" data-cursor="VIEW">
+        <span class="wp-idx" aria-hidden="true">002</span>
+        <div class="wp-fig"><i class="pat-rings"></i><span class="tag m">E-COMMERCE / WEB</span></div>
+        <div class="wp-meta">
+          <h3 class="wp-name">Cartlane</h3>
+          <p class="wp-result m">RESULT: <b>+38% CHECKOUT CONVERSION</b></p>
+        </div>
+      </article>
+
+      <article class="wpanel" data-cursor="VIEW">
+        <span class="wp-idx" aria-hidden="true">003</span>
+        <div class="wp-fig"><i class="pat-wave"></i><span class="tag m">VOIP / PLATFORM</span></div>
+        <div class="wp-meta">
+          <h3 class="wp-name">Voxio</h3>
+          <p class="wp-result m">RESULT: <b>2M+ CALLS ROUTED / MO</b></p>
+        </div>
+      </article>
+
+      <article class="wpanel" data-cursor="VIEW">
+        <span class="wp-idx" aria-hidden="true">004</span>
+        <div class="wp-fig"><i class="pat-dots"></i><span class="tag m">MOBILE / IOS + ANDROID</span></div>
+        <div class="wp-meta">
+          <h3 class="wp-name">Fieldkit</h3>
+          <p class="wp-result m">RESULT: <b>4.8★ ON BOTH STORES</b></p>
+        </div>
+      </article>
+
+      <article class="wpanel" data-cursor="VIEW">
+        <span class="wp-idx" aria-hidden="true">005</span>
+        <div class="wp-fig"><i class="pat-diag"></i><span class="tag m">APPLIED AI / PRODUCT</span></div>
+        <div class="wp-meta">
+          <h3 class="wp-name">Neuronote</h3>
+          <p class="wp-result m">RESULT: <b>70% OF TICKETS AUTOMATED</b></p>
+        </div>
+      </article>
+
+      <article class="wpanel" data-cursor="VIEW">
+        <span class="wp-idx" aria-hidden="true">006</span>
+        <div class="wp-fig"><i class="pat-grid"></i><span class="tag m">INFRA / DEVOPS</span></div>
+        <div class="wp-meta">
+          <h3 class="wp-name">Gridcore</h3>
+          <p class="wp-result m">RESULT: <b>99.99% UPTIME — 3 YRS</b></p>
+        </div>
+      </article>
+    </div>
+
+    <div class="work-progress" aria-hidden="true"><i id="workBar"></i></div>
+  </div>
+</section>
+
+<!-- ═══ SIGNALS / TESTIMONIALS ═══ -->
+<section class="wrap" id="signals" aria-label="Testimonials" style="padding-bottom:8vh">
+  <header class="sec-head">
+    <span class="m"><b class="acc">05</b> / <span class="scramble" data-text="SIGNALS — CLIENT TRANSMISSIONS">SIGNALS — CLIENT TRANSMISSIONS</span></span>
+    <span class="m m-dim run">UNEDITED — ON RECORD</span>
+  </header>
+
+  <figure class="quote-row">
+    <blockquote class="quote-txt" data-words><span class="qm">“</span>Swifty rebuilt our platform in seven weeks. The previous agency quoted seven months. The quality shocked us more than the speed.<span class="qm">”</span></blockquote>
+    <figcaption class="who m"><b>AMARA OKAFOR</b><span class="m-dim">CO-FOUNDER &amp; CEO — CARTLANE</span></figcaption>
+  </figure>
+  <figure class="quote-row">
+    <blockquote class="quote-txt" data-words><span class="qm">“</span>The first dev team that made us feel like the only client. Fast, precise, zero drama — every single sprint.<span class="qm">”</span></blockquote>
+    <figcaption class="who m"><b>DANIEL REYES</b><span class="m-dim">PRODUCT LEAD — VOXIO</span></figcaption>
+  </figure>
+  <figure class="quote-row">
+    <blockquote class="quote-txt" data-words><span class="qm">“</span>Every Friday demo actually demoed something. Velocity like this changes what you can promise your board.<span class="qm">”</span></blockquote>
+    <figcaption class="who m"><b>SOFIA LINDQVIST</b><span class="m-dim">CEO — FIELDKIT</span></figcaption>
+  </figure>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta" id="contact" aria-label="Start a project">
+  <div class="wrap">
+    <header class="sec-head">
+      <span class="m"><b class="acc">06</b> / <span class="scramble" data-text="ENGAGE — START A PROJECT">ENGAGE — START A PROJECT</span></span>
+      <span class="m m-dim run">RESPONSE &lt; 24H — NDA ON REQUEST</span>
+    </header>
+  </div>
+
+  <div class="cta-mid wrap">
+    <h2 class="cta-title d" data-reveal>
+      Ready to build<br><span class="hollow">something fast?</span>
+    </h2>
+    <a class="cta-mail magnetic" href="mailto:hello@swifty.studio" data-cursor="SEND">hello@swifty.studio <span aria-hidden="true">↗</span></a>
+    <div class="cta-meta m m-dim" data-reveal>
+      <span>REPLY &lt; 24H</span>
+      <span>HONEST SCOPE — REAL PLAN</span>
+      <span>WORLDWIDE / REMOTE</span>
+      <a class="acc" href="contact.html" data-cursor="GO" style="opacity:1">PREFER A FORM? → CONTACT PAGE</a>
+    </div>
+  </div>
+
+  <div class="cta-band" aria-hidden="true">
+    <div class="mq" data-mq-dir="-1" data-mq-speed="0.8">
+      <div class="mq-chunk">
+        <span>Start a project</span><em>*</em><span>Start a project</span><em>*</em><span>Start a project</span><em>*</em>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══ FOOTER / COLOPHON ═══ -->
+<footer class="footer" aria-label="Footer">
+  <div class="foot-grid">
+    <nav aria-label="Footer sitemap">
+      <h4>Sitemap</h4>
+      <ul>
+        <li><a href="#services">01 — Services</a></li>
+        <li><a href="#process">02 — Process</a></li>
+        <li><a href="#work">03 — Work</a></li>
+        <li><a href="contact.html">04 — Contact</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Footer services">
+      <h4>Capabilities</h4>
+      <ul>
+        <li><a href="#services">SaaS Platforms</a></li>
+        <li><a href="#services">Applied AI</a></li>
+        <li><a href="#services">Web Systems</a></li>
+        <li><a href="#services">Mobile Apps</a></li>
+        <li><a href="#services">Voice &amp; VoIP</a></li>
+        <li><a href="#services">Infra &amp; Ops</a></li>
+      </ul>
+    </nav>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:hello@swifty.studio">hello@swifty.studio</a></li>
+        <li><a href="#" aria-label="Swifty on X (Twitter)">X / Twitter</a></li>
+        <li><a href="#" aria-label="Swifty on LinkedIn">LinkedIn</a></li>
+        <li><a href="#" aria-label="Swifty on GitHub">GitHub</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Colophon</h4>
+      <ul>
+        <li><span>TYPE: ARCHIVO + JETBRAINS MONO</span></li>
+        <li><span>ENGINE: HTML + GSAP — NO BUILD</span></li>
+        <li><span>WEIGHT: ONE FILE, ZERO IMAGES</span></li>
+        <li><span>MADE SWIFTLY, OBVIOUSLY</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-mark" aria-hidden="true"><span class="fm-i">Swifty®</span></div>
+  <div class="foot-bottom m m-dim">
+    <span>© <span id="year">2026</span> SWIFTY® — ALL RIGHTS RESERVED</span>
+    <span>48.8566°N — 2.3522°E</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var hasGsap = typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined";
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ---------- mobile menu (works in every mode) ---------- */
+  var burger = document.getElementById("burger");
+  var menuEl = document.getElementById("menu");
+  var setMenu = function (open) {
+    var wasOpen = document.body.classList.contains("menu-open");
+    if (open === wasOpen) return;
+    document.body.classList.toggle("menu-open", open);
+    burger.setAttribute("aria-expanded", String(open));
+    burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    [document.getElementById("main"), document.querySelector(".footer")].forEach(function (el) {
+      if (!el) return;
+      el.inert = open;
+      if (open) el.setAttribute("aria-hidden", "true");
+      else el.removeAttribute("aria-hidden");
+    });
+    if (open) {
+      var first = menuEl.querySelector("a");
+      if (first) first.focus();
+    } else if (menuEl.contains(document.activeElement)) {
+      burger.focus();
+    }
+    if (window.__lenis) { open ? window.__lenis.stop() : window.__lenis.start(); }
+  };
+  burger.addEventListener("click", function () {
+    setMenu(!document.body.classList.contains("menu-open"));
+  });
+  document.querySelectorAll(".menu a").forEach(function (a) {
+    a.addEventListener("click", function () { setMenu(false); });
+  });
+  window.addEventListener("keydown", function (e) { if (e.key === "Escape") setMenu(false); });
+
+  /* ---------- STATIC MODE (no GSAP / reduced motion) ---------- */
+  if (!hasGsap || reduced) {
+    document.documentElement.classList.add("static");
+    var pre = document.getElementById("pre");
+    if (pre) pre.remove();
+    var wt = document.getElementById("workTrack");
+    if (wt) {
+      wt.setAttribute("tabindex", "0");
+      wt.setAttribute("role", "region");
+      wt.setAttribute("aria-label", "Selected work — scroll horizontally");
+    }
+    document.querySelectorAll("[data-count]").forEach(function (el) {
+      var d = parseInt(el.dataset.decimals || "0", 10);
+      var p = parseInt(el.dataset.pad || "0", 10);
+      var v = parseFloat(el.dataset.target).toFixed(d);
+      el.textContent = p ? String(v).padStart(p, "0") : v;
+    });
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.defaults({ ease: "expo.out" });
+
+  /* ---------- Lenis smooth scroll (optional, graceful) ---------- */
+  var lenis = null;
+  if (typeof Lenis !== "undefined") {
+    lenis = new Lenis({ duration: 1.05, smoothWheel: true });
+    window.__lenis = lenis;
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
+    gsap.ticker.lagSmoothing(0);
+  }
+  var scrollToTarget = function (target) {
+    if (lenis) lenis.scrollTo(target, { offset: -72 }); // clear the 64px fixed nav (matches scroll-padding-top)
+    else document.querySelector(target).scrollIntoView({ behavior: "smooth" });
+  };
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    var id = a.getAttribute("href");
+    if (id.length < 2) return;
+    a.addEventListener("click", function (e) {
+      var el = document.querySelector(id);
+      if (!el) return;
+      e.preventDefault();
+      scrollToTarget(id);
+    });
+  });
+
+  /* ---------- PRELOADER ---------- */
+  var pre = document.getElementById("pre");
+  var preNum = document.getElementById("preNum");
+  var preBar = document.getElementById("preBar");
+  var heroIntro = gsap.timeline({ paused: true })
+    .from(".hl-i", { yPercent: 112, duration: 1.15, stagger: 0.1 })
+    .from(".hero-meta-top, .hero-foot", { autoAlpha: 0, y: 18, duration: 0.7, stagger: 0.08 }, "-=0.55")
+    .from(".nav", { autoAlpha: 0, duration: 0.5 }, "-=0.6");
+
+  if (lenis) lenis.stop();
+  document.body.style.overflow = "hidden";
+
+  var preDone = false;
+  var finishPre = function () {
+    if (preDone) return;
+    preDone = true;
+    gsap.timeline()
+      .to(pre, { yPercent: -100, duration: 0.85, ease: "power4.inOut" })
+      .add(function () {
+        pre.remove();
+        document.body.style.overflow = "";
+        if (lenis) lenis.start();
+        ScrollTrigger.refresh();
+      })
+      .add(function () { heroIntro.play(); }, "-=0.45");
+  };
+
+  var cnt = { v: 0 };
+  var preTl = gsap.timeline({ onComplete: finishPre })
+    .to(cnt, {
+      v: 100, duration: 1.7, ease: "power2.inOut",
+      onUpdate: function () {
+        preNum.textContent = String(Math.round(cnt.v)).padStart(3, "0");
+      }
+    }, 0)
+    .to(preBar, { scaleX: 1, duration: 1.7, ease: "power2.inOut" }, 0)
+    .to(".pre-log", { opacity: 1, duration: 0.01, stagger: 0.28 }, 0.1)
+    .to({}, { duration: 0.25 }); // beat at 100
+  pre.addEventListener("click", function () { preTl.progress(1); });
+  window.addEventListener("keydown", function skip(e) {
+    preTl.progress(1);
+    window.removeEventListener("keydown", skip);
+  }, { once: true });
+
+  /* ---------- GENERATIVE FIELD (Canvas 2D dot grid) ---------- */
+  (function () {
+    var cv = document.getElementById("field");
+    var hero = document.querySelector(".hero");
+    if (!cv) return;
+    var ctx = cv.getContext("2d");
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var W, H, pts = [], SP = 30, running = true, t = 0;
+    var mouse = { x: -9999, y: -9999 };
+
+    function build() {
+      W = hero.offsetWidth; H = hero.offsetHeight;
+      cv.width = W * dpr; cv.height = H * dpr;
+      cv.style.width = W + "px"; cv.style.height = H + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      pts = [];
+      SP = W < 700 ? 26 : 30;
+      for (var y = SP; y < H; y += SP)
+        for (var x = SP; x < W + SP; x += SP)
+          pts.push({ x: x, y: y, dx: 0, dy: 0 });
+    }
+    build();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { build(); });
+
+    var ink = "rgba(12,12,12,0.34)";
+    var accent = "#FF4A00";
+    var rafId = null;
+    function frame() {
+      rafId = null;
+      if (!running) return;
+      t += 0.008;
+      ctx.clearRect(0, 0, W, H);
+      var R = 150, R2 = R * R;
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i];
+        var wob = Math.sin(t * 2 + p.x * 0.011 + p.y * 0.017) * 1.6;
+        var mx = p.x - mouse.x, my = p.y - mouse.y;
+        var d2 = mx * mx + my * my;
+        var tx = 0, ty = 0, hot = false;
+        if (d2 < R2) {
+          var d = Math.sqrt(d2) || 1;
+          var f = (1 - d / R) * 26;
+          tx = (mx / d) * f; ty = (my / d) * f;
+          hot = d < R * 0.6;
+        }
+        p.dx += (tx - p.dx) * 0.12;
+        p.dy += (ty - p.dy) * 0.12;
+        var px = p.x + p.dx, py = p.y + p.dy + wob;
+        if (hot) {
+          ctx.fillStyle = accent;
+          ctx.fillRect(px - 1.5, py - 1.5, 3, 3);
+        } else {
+          ctx.fillStyle = ink;
+          ctx.fillRect(px - 1, py - 1, 2, 2);
+        }
+      }
+      rafId = requestAnimationFrame(frame);
+    }
+    function wake() { if (running && rafId === null) rafId = requestAnimationFrame(frame); }
+    wake();
+
+    hero.addEventListener("pointermove", function (e) {
+      var r = cv.getBoundingClientRect();
+      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+    }, { passive: true });
+    hero.addEventListener("pointerleave", function () { mouse.x = -9999; mouse.y = -9999; });
+
+    var deb;
+    window.addEventListener("resize", function () { clearTimeout(deb); deb = setTimeout(build, 200); });
+    var heroST = ScrollTrigger.create({
+      trigger: hero, start: "top bottom", end: "bottom top",
+      onToggle: function (self) {
+        running = self.isActive && !document.hidden;
+        wake();
+      }
+    });
+    document.addEventListener("visibilitychange", function () {
+      running = heroST.isActive && !document.hidden;
+      wake();
+    });
+  })();
+
+  /* ---------- KINETIC MARQUEES (velocity-reactive) ---------- */
+  (function () {
+    var vel = 0;
+    ScrollTrigger.create({
+      start: 0, end: "max",
+      onUpdate: function (self) { vel = self.getVelocity(); }
+    });
+    // single shared decay so an abrupt scroll stop (End key, scrollbar fling) can't freeze the boost/skew
+    gsap.ticker.add(function (time, dt) {
+      vel *= Math.exp(-6 * dt / 1000);
+      if (Math.abs(vel) < 1) vel = 0;
+    });
+    document.querySelectorAll(".mq").forEach(function (mq) {
+      var chunk = mq.querySelector(".mq-chunk");
+      var dir = parseFloat(mq.dataset.mqDir || "-1");
+      var speed = parseFloat(mq.dataset.mqSpeed || "1") * 60; // px/s
+      var x = 0, w = 1, skew = 0;
+      var measure = function () { // re-measured on font load + resize; clones topped up as needed
+        w = Math.max(chunk.offsetWidth, 1);
+        var need = Math.ceil((window.innerWidth * 2) / w) + 1;
+        while (mq.children.length < need + 1) mq.appendChild(chunk.cloneNode(true));
+      };
+      measure();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+      window.addEventListener("resize", measure);
+      gsap.ticker.add(function (time, dt) {
+        var boost = 1 + Math.min(Math.abs(vel) / 900, 4);
+        x += dir * speed * boost * (dt / 1000);
+        if (x <= -w) x += w;
+        if (x > 0) x -= w;
+        var targetSkew = gsap.utils.clamp(-9, 9, vel / 220);
+        skew += (targetSkew - skew) * 0.1;
+        mq.style.transform = "translate3d(" + x + "px,0,0) skewX(" + skew + "deg)";
+      });
+    });
+  })();
+
+  /* ---------- SCRAMBLE (section labels decode on enter) ---------- */
+  (function () {
+    var GLYPHS = "█▓▒<>/\\#0123456789";
+    document.querySelectorAll(".scramble").forEach(function (el) {
+      var final = el.dataset.text || el.textContent;
+      ScrollTrigger.create({
+        trigger: el, start: "top 90%", once: true,
+        onEnter: function () {
+          var obj = { p: 0 };
+          gsap.to(obj, {
+            p: 1, duration: 0.9, ease: "power2.out",
+            onUpdate: function () {
+              var reveal = Math.floor(obj.p * final.length);
+              var out = final.slice(0, reveal);
+              for (var i = reveal; i < final.length; i++) {
+                out += final[i] === " " ? " " : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+              }
+              el.textContent = out;
+            },
+            onComplete: function () { el.textContent = final; }
+          });
+        }
+      });
+    });
+  })();
+
+  /* ---------- SCROLL REVEALS ---------- */
+  document.querySelectorAll("[data-reveal]").forEach(function (el) {
+    gsap.from(el, {
+      y: 42, autoAlpha: 0, duration: 0.9, ease: "power3.out",
+      scrollTrigger: { trigger: el, start: "top 90%", once: true }
+    });
+  });
+  document.querySelectorAll("[data-reveal-group]").forEach(function (g) {
+    gsap.from(g.children, {
+      y: 36, autoAlpha: 0, duration: 0.7, ease: "power3.out", stagger: 0.08,
+      scrollTrigger: { trigger: g, start: "top 88%", once: true }
+    });
+  });
+
+  /* ---------- COUNT-UPS ---------- */
+  document.querySelectorAll("[data-count]").forEach(function (el) {
+    var target = parseFloat(el.dataset.target);
+    var dec = parseInt(el.dataset.decimals || "0", 10);
+    var pad = parseInt(el.dataset.pad || "0", 10);
+    var fmt = function (v) {
+      var s = v.toFixed(dec);
+      return pad ? s.padStart(pad, "0") : s;
+    };
+    el.textContent = fmt(0);
+    ScrollTrigger.create({
+      trigger: el, start: "top 88%", once: true,
+      onEnter: function () {
+        var o = { v: 0 };
+        gsap.to(o, {
+          v: target, duration: 1.9, ease: "power3.out",
+          onUpdate: function () { el.textContent = fmt(o.v); }
+        });
+      }
+    });
+  });
+
+  /* ---------- METHOD sticky number ---------- */
+  (function () {
+    var num = document.getElementById("methodNum");
+    if (!num) return;
+    document.querySelectorAll(".step").forEach(function (step) {
+      ScrollTrigger.create({
+        trigger: step, start: "top 55%", end: "bottom 55%",
+        onToggle: function (self) {
+          if (!self.isActive) return;
+          var n = step.dataset.step;
+          gsap.timeline()
+            .to(num, { yPercent: -18, autoAlpha: 0, duration: 0.18, ease: "power2.in" })
+            .add(function () { num.innerHTML = "0<b>" + n + "</b>"; })
+            .fromTo(num, { yPercent: 18, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.28, ease: "power3.out" });
+        }
+      });
+    });
+  })();
+
+  /* ---------- WORK: pinned horizontal travel (desktop) ---------- */
+  var mm = gsap.matchMedia();
+  mm.add("(min-width: 900px)", function () {
+    var track = document.getElementById("workTrack");
+    var pin = document.getElementById("workPin");
+    var bar = document.getElementById("workBar");
+    var travel = function () { return Math.max(track.scrollWidth - window.innerWidth + window.innerWidth * 0.05, 0); };
+    var tween = gsap.to(track, {
+      x: function () { return -travel(); },
+      ease: "none",
+      scrollTrigger: {
+        trigger: pin,
+        start: "top top",
+        end: function () { return "+=" + travel(); },
+        pin: true,
+        scrub: 0.7,
+        invalidateOnRefresh: true,
+        onUpdate: function (self) {
+          bar.style.transform = "scaleX(" + self.progress + ")";
+        }
+      }
+    });
+    return function () { tween.scrollTrigger && tween.scrollTrigger.kill(); tween.kill(); };
+  });
+
+  /* ---------- TESTIMONIALS: word-by-word scrub ---------- */
+  document.querySelectorAll("[data-words]").forEach(function (q) {
+    // split text nodes into word spans (keeps .qm marks intact)
+    var walk = function (node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (child) {
+        if (child.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          child.textContent.split(/(\s+)/).forEach(function (piece) {
+            if (!piece) return;
+            if (/^\s+$/.test(piece)) frag.appendChild(document.createTextNode(piece));
+            else {
+              var s = document.createElement("span");
+              s.className = "w"; s.textContent = piece;
+              frag.appendChild(s);
+            }
+          });
+          node.replaceChild(frag, child);
+        }
+      });
+    };
+    walk(q);
+    gsap.from(q.querySelectorAll(".w"), {
+      opacity: 0.14, stagger: 0.04, ease: "none",
+      scrollTrigger: { trigger: q, start: "top 82%", end: "top 40%", scrub: 0.4 }
+    });
+  });
+
+  /* ---------- hero parallax out ---------- */
+  gsap.to(".hero-title", {
+    yPercent: -14, ease: "none",
+    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.6 }
+  });
+
+  /* ---------- footer mark rise (inner span so the crop holds) ---------- */
+  gsap.from(".fm-i", {
+    yPercent: 58, ease: "none",
+    scrollTrigger: { trigger: ".footer", start: "top 90%", end: "bottom bottom", scrub: 0.5 }
+  });
+
+  if (!fine) return;
+
+  /* ---------- CURSOR (crosshair + labeled ring) ---------- */
+  (function () {
+    var cur = document.querySelector(".cur");
+    var ring = document.querySelector(".cur-ring");
+    var label = ring.querySelector("b");
+    var cx = gsap.quickTo(cur, "x", { duration: 0.08, ease: "power2.out" });
+    var cy = gsap.quickTo(cur, "y", { duration: 0.08, ease: "power2.out" });
+    var rx = gsap.quickTo(ring, "x", { duration: 0.35, ease: "power2.out" });
+    var ry = gsap.quickTo(ring, "y", { duration: 0.35, ease: "power2.out" });
+    window.addEventListener("pointermove", function (e) {
+      document.body.classList.add("cur-on");
+      cx(e.clientX); cy(e.clientY); rx(e.clientX); ry(e.clientY);
+    }, { passive: true });
+    document.documentElement.addEventListener("mouseleave", function () {
+      document.body.classList.remove("cur-on");
+    });
+    var hot = function (el, txt) {
+      el.addEventListener("mouseenter", function () {
+        document.body.classList.add("cur-hot");
+        label.textContent = txt || el.dataset.cursor || "GO";
+      });
+      el.addEventListener("mouseleave", function () {
+        document.body.classList.remove("cur-hot");
+      });
+    };
+    document.querySelectorAll("a, button, [data-cursor]").forEach(function (el) { hot(el); });
+  })();
+
+  /* ---------- magnetic ---------- */
+  document.querySelectorAll(".magnetic").forEach(function (el) {
+    el.addEventListener("pointermove", function (e) {
+      var r = el.getBoundingClientRect();
+      gsap.to(el, {
+        x: (e.clientX - (r.left + r.width / 2)) * 0.25,
+        y: (e.clientY - (r.top + r.height / 2)) * 0.25,
+        duration: 0.4, ease: "power2.out"
+      });
+    });
+    el.addEventListener("pointerleave", function () {
+      gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1,0.4)" });
+    });
+  });
+})();
+</script>
+</body>
+</html>
